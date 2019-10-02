@@ -12,11 +12,11 @@ description = \
     """
 
 requires = [
-    "gcc-6",
-    "cmake-3",
-    "ilmbase-2.2.1",
-    "boost-1.61.0",
-    "numpy-1.12.1"
+    "gcc-6+",
+    "cmake-3+",
+    "boost-1.61",
+    "numpy-1.12.1",
+    "ilmbase-{version}".format(version=str(version))
 ]
 
 variants = [
@@ -28,9 +28,12 @@ build_system = "cmake"
 with scope("config") as config:
     config.build_thread_count = "logical_cores"
 
-#TODO: Use the SHA1 of the archive instead.
-uuid = "pyilmbase-2.2.1"
+uuid = "pyilmbase-{version}".format(version=str(version))
 
 def commands():
     env.LD_LIBRARY_PATH.prepend("{root}/lib")
     env.PYTHONPATH.prepend("{root}/lib64/python2.7/site-packages")
+
+    # Helper environment variables.
+    env.PYILMBASE_INCLUDE_PATH.set("{root}/include")
+    env.PYILMBASE_LIBRARY_PATH.set("{root}/lib")
