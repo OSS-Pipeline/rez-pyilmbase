@@ -12,11 +12,11 @@ description = \
     """
 
 requires = [
-    "gcc-6+",
-    "cmake-3+",
     "boost-1.61",
-    "numpy-1.12.1",
-    "ilmbase-{version}".format(version=str(version))
+    "cmake-3+",
+    "gcc-6+",
+    "ilmbase-{version}".format(version=str(version)),
+    "numpy-1.12.1"
 ]
 
 variants = [

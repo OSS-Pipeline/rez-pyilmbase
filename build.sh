@@ -35,7 +35,8 @@ echo -e "\n"
 
 cd ${BUILD_PATH}
 
-make -j${REZ_BUILD_THREAD_COUNT}
+make \
+    -j${REZ_BUILD_THREAD_COUNT}
 
 echo -e "\n"
 echo -e "[BUILD] Finished building PyIlmBase-${PYILMBASE_VERSION}!"
