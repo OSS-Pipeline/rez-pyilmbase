@@ -38,17 +38,26 @@ echo -e "\n"
 mkdir -p ${BUILD_PATH}
 cd ${BUILD_PATH}
 
+# We detect Python and its components in a more modern fashion.
+sed "s|FIND_PACKAGE ( PythonLibs REQUIRED )||1" --in-place ${BUILD_PATH}/../CMakeLists.txt
+sed "s|FIND_PACKAGE ( PythonInterp REQUIRED )|find_package (Python REQUIRED \${PYTHON_VERSION} COMPONENTS Interpreter Development NumPy)|1" --in-place ${BUILD_PATH}/../CMakeLists.txt
 sed "s|COMPONENTS Python|OPTIONAL_COMPONENTS python python2 python2.7|1" --in-place ${BUILD_PATH}/../CMakeLists.txt
+sed "s|FIND_PACKAGE ( NumPy )||1" --in-place ${BUILD_PATH}/../CMakeLists.txt
+sed "s|IF (NUMPY_FOUND)|IF (Python_NumPy_FOUND)|1" --in-place ${BUILD_PATH}/../CMakeLists.txt
 
+# The name of some variables generated changed when using the more modern Python detection, so we have to update some scripts to reflect that.
+sed "s|python\${PYTHON_VERSION_MAJOR}.\${PYTHON_VERSION_MINOR}|python\${Python_VERSION_MAJOR}.\${Python_VERSION_MINOR}|1" --in-place ${BUILD_PATH}/../PyIex/CMakeLists.txt ${BUILD_PATH}/../PyImath/CMakeLists.txt ${BUILD_PATH}/../PyImathNumpy/CMakeLists.txt
+
+# We make sure CMake is going to find some headers by adding them into CXX_FLAGS.
+# We are not using version for finding the IlmBase libraries as it tends to very easily break.
 cmake \
     ${BUILD_PATH}/.. \
     -DCMAKE_INSTALL_PREFIX=${INSTALL_PATH} \
-    -DCMAKE_C_FLAGS=-fPIC \
-    -DCMAKE_CXX_FLAGS=-fPIC \
+    -DCMAKE_C_FLAGS="-fPIC" \
+    -DCMAKE_CXX_FLAGS="-fPIC -I${REZ_PYTHON_ROOT}/include/python${REZ_PYTHON_MAJOR_VERSION}.${REZ_PYTHON_MINOR_VERSION} -I${REZ_BOOST_ROOT}/include -I${REZ_NUMPY_ROOT}/numpy/core/include" \
     -DILMBASE_PACKAGE_PREFIX=${REZ_ILMBASE_ROOT} \
     -DBOOST_ROOT=${REZ_BOOST_ROOT} \
-    -DPYTHON_LIBRARY=${REZ_PYTHON_ROOT}/lib/libpython2.7.a \
-    -DPYTHON_INCLUDE_DIR=${REZ_PYTHON_ROOT}/include
+    -DNAMESPACE_VERSIONING=OFF
 
 echo -e "\n"
 echo -e "[CONFIGURE] Finished configuring PyIlmBase-${PYILMBASE_VERSION}!"

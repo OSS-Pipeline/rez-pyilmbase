@@ -16,7 +16,8 @@ requires = [
     "cmake-3+",
     "gcc-6+",
     "ilmbase-{version}".format(version=str(version)),
-    "numpy-1.12.1"
+    "numpy-1.12.1",
+    "python-2.7+<3"
 ]
 
 variants = [
@@ -32,8 +33,7 @@ uuid = "pyilmbase-{version}".format(version=str(version))
 
 def commands():
     env.LD_LIBRARY_PATH.prepend("{root}/lib")
-    env.PYTHONPATH.prepend("{root}/lib64/python2.7/site-packages")
+    env.PYTHONPATH.prepend("{root}/lib/python2.7/site-packages")
 
     # Helper environment variables.
-    env.PYILMBASE_INCLUDE_PATH.set("{root}/include")
     env.PYILMBASE_LIBRARY_PATH.set("{root}/lib")
