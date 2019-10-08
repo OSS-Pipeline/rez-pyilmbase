@@ -33,7 +33,7 @@ uuid = "pyilmbase-{version}".format(version=str(version))
 
 def commands():
     env.LD_LIBRARY_PATH.prepend("{root}/lib")
-    env.PYTHONPATH.prepend("{root}/lib/python2.7/site-packages")
+    env.PYTHONPATH.prepend("{root}/lib/python" + str(env.REZ_PYTHON_MAJOR_VERSION) + "." + str(env.REZ_PYTHON_MINOR_VERSION) + "/site-packages")
 
     # Helper environment variables.
     env.PYILMBASE_INCLUDE_PATH.set("{root}/include")

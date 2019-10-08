@@ -41,7 +41,7 @@ cd ${BUILD_PATH}
 # We detect Python and its components in a more modern fashion.
 sed "s|FIND_PACKAGE ( PythonLibs REQUIRED )||1" --in-place ${BUILD_PATH}/../CMakeLists.txt
 sed "s|FIND_PACKAGE ( PythonInterp REQUIRED )|find_package (Python REQUIRED \${PYTHON_VERSION} COMPONENTS Interpreter Development NumPy)|1" --in-place ${BUILD_PATH}/../CMakeLists.txt
-sed "s|COMPONENTS Python|OPTIONAL_COMPONENTS python python2 python2.7|1" --in-place ${BUILD_PATH}/../CMakeLists.txt
+sed "s|COMPONENTS Python|OPTIONAL_COMPONENTS python python\${REZ_PYTHON_MAJOR_VERSION} python\${REZ_PYTHON_MAJOR_VERSION}.\${REZ_PYTHON_MINOR_VERSION}|1" --in-place ${BUILD_PATH}/../CMakeLists.txt
 sed "s|FIND_PACKAGE ( NumPy )||1" --in-place ${BUILD_PATH}/../CMakeLists.txt
 sed "s|IF (NUMPY_FOUND)|IF (Python_NumPy_FOUND)|1" --in-place ${BUILD_PATH}/../CMakeLists.txt
 
