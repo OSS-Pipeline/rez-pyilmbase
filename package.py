@@ -36,4 +36,5 @@ def commands():
     env.PYTHONPATH.prepend("{root}/lib/python2.7/site-packages")
 
     # Helper environment variables.
+    env.PYILMBASE_INCLUDE_PATH.set("{root}/include")
     env.PYILMBASE_LIBRARY_PATH.set("{root}/lib")

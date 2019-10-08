@@ -48,6 +48,11 @@ sed "s|IF (NUMPY_FOUND)|IF (Python_NumPy_FOUND)|1" --in-place ${BUILD_PATH}/../C
 # The name of some variables generated changed when using the more modern Python detection, so we have to update some scripts to reflect that.
 sed "s|python\${PYTHON_VERSION_MAJOR}.\${PYTHON_VERSION_MINOR}|python\${Python_VERSION_MAJOR}.\${Python_VERSION_MINOR}|1" --in-place ${BUILD_PATH}/../PyIex/CMakeLists.txt ${BUILD_PATH}/../PyImath/CMakeLists.txt ${BUILD_PATH}/../PyImathNumpy/CMakeLists.txt
 
+# PyIlmBase < 2.4.x is not installing the headers alongside the libraries, so we are going to do that ourselves.
+mkdir -p ${INSTALL_PATH}/include/OpenEXR
+cp "${BUILD_PATH}/../PyIex"/*.h ${INSTALL_PATH}/include/OpenEXR
+cp "${BUILD_PATH}/../PyImath"/*.h ${INSTALL_PATH}/include/OpenEXR
+
 # We make sure CMake is going to find some headers by adding them into CXX_FLAGS.
 # We are not using version for finding the IlmBase libraries as it tends to very easily break.
 cmake \
